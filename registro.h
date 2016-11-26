@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
+
+#define QTD (sizeof(tProdutos)/sizeof(Produto))
 
 //Definição de structs usadas no "banco de dados"
 typedef struct {
@@ -32,7 +35,6 @@ typedef struct{
 
 //variaveis para gerenciamento do "banco de dados"
 char op;
-static int qntd = 0;
 
 FILE *db;
 Produto tProdutos[100];
@@ -41,7 +43,8 @@ Produto tProdutos[100];
 void inicio();
 void addProduto();
 void listar();
-void ordenar();
+void ordenarPreco();
+void ordenarNome();
 void rmProduto();//Remoção de produtos.
 char valida();//Verificar se usuário deseja ou não adicionar novos produtos.
 

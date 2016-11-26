@@ -30,8 +30,20 @@ void inicio(){
 
 void addProduto(){
 	int add = 0;
-	db = fopen("db.txt", "a");
+	
 	op = 's';
+	
+	/*
+		Salvando produtos
+		
+	*/
+	
+	//Verifica se o arquivo pode ser aberto. Se não, imprime mensagem de erro e fecha o programa.
+	if((db = fopen("db.txt", "a")) == NULL){
+		printf("ERRO: Impossível abrir arquivo.");
+		exit(1);
+	}
+	
 	while((add < 100) && (op == 's')){
 		system("clear");
 		printf("	INSIRA OS DADOS DO PRODUTO\n\n\n");
@@ -51,12 +63,13 @@ void addProduto(){
 		scanf("%d %d", &tProdutos[add].loc.corredor, &tProdutos[add].loc.prateleira);
 		printf("Quantidade em estoque: ");
 		scanf("%d", &tProdutos[add].estoque);
+		srand(time(NULL));
 		tProdutos[add].codigo = 1001 + ( rand() % 4000 );
 		
 		fwrite(&tProdutos[add], sizeof(Produto), 1, db);
 		add++;
 		op = valida();
-		qntd++;
+		//qntd++;
 	}
 		fclose(db);
 		
@@ -83,7 +96,10 @@ void listar(){
 	
 	//printf("CODIGO    |NOME    |PREÇO    |CATEGORIA    |DESCRIÇÃO    |FABRICANTE    |VALIDADE    |    LOCALIZAÇÃO    |ESTOQUE\n\n");
 	
-	db = fopen("db.txt", "r");
+	if((db = fopen("db.txt", "r"))==NULL){
+		printf("ERRO: Impossível abrir arquivo.");
+		exit(1);
+	}
 	
 	leitura = fread(&tProdutos[indice], sizeof(Produto), 1, db);
 	
@@ -100,15 +116,62 @@ void listar(){
 	
 	scanf("%d", &opcao);
 	switch(opcao){
-		case 1: ordenar();
+		case 1: ordenarPreco();
 			break;
 		case 0: telaFuncionario();
 			break;
 	}
 }
 
-void ordenar(){
+void ordenarPreco(){
+	
+	int i, j, aux, k, esc;
+	int numProd = QTD;
+	
+	//Produto *produto_a, *produto_b;
+	
+	if((db = fopen("db.txt", "r"))==NULL){
+		printf("ERRO: Impossível abrir arquivo.");
+		exit(1);
+	}
+	
+	for(i = 0; i < QTD; i++){
+		for(j = 0; j < QTD; j++){
+			//produto_a = tProdutos[i].preco;
+			
+			if(tProdutos[i].preco > tProdutos[i].preco){
+				//produto_b = tProdutos[j].preco;
+				
+				aux = tProdutos[i].preco;
+				tProdutos[i].preco = tProdutos[j].preco;
+				tProdutos[j].preco = aux;
+			}
+		}
+	}
+	
+	remove("db.txt");
+	if((db = fopen("db.txt", "w+"))==NULL){
+		printf("ERRO: Impossível abrir arquivo.");
+		exit(1);
+	}
+	
+	
+	for(k = 0; k < QTD; k++){
+		esc = fwrite(&tProdutos[k], sizeof(Produto), 1, db);
+		//Se o valor retornado por fwrite for diferente de "1" ocorreu algum erro na reescrita do arquivo.
+		if(esc != 1){
+			printf("Erro!");
+		}
+	}
+	
+	fclose(db);
+	
+	listar();
+	
+}
 
+void ordenarNome(){
+	
 }
 
 void rmProduto(){

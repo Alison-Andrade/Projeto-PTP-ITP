@@ -6,7 +6,15 @@
 
 //Funções de tela inicial.c
 void telaInicial();
+
+//
 void telaFuncionario();
+void loginFuncionario();
+
+//
 void telaCliente();
+void verificaCliente();
+void loginCliente();
+void cadastroCliente();
 	
 #endif
