@@ -39,6 +39,9 @@ char op;
 FILE *db;
 Produto tProdutos[100];
 
+//FILE *qt;
+//int qntd;
+
 //
 void inicio();
 void addProduto();
